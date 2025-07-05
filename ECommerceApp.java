@@ -188,23 +188,49 @@ class CheckoutService {
 
 public class ECommerceApp {
     public static void main(String[] args) {
+        // Sample products with correct weights and prices
+        Product cheese = new ExpirableShippableProduct("Cheese", 100, 10, false, 0.2); // 200g, 100 per unit
+        Product biscuits = new ExpirableProduct("Biscuits", 150, 20, false, 0.7); // 150 per unit, 700g, shippable
+        Product tv = new ShippableProduct("TV", 1500, 1, 10.0); // 150 per unit, 700g, shippable
+        Product mobileCard = new SimpleProduct("Mobile Scratch Card", 5, 2); // 100g, shippable
+        
         try {
-            // Sample products with correct weights and prices
-            Product cheese = new ExpirableShippableProduct("Cheese", 100, 10, false, 0.2); // 200g, 100 per unit
-            Product biscuits = new ExpirableProduct("Biscuits", 150, 20, false, 0.7); // 150 per unit, 700g, shippable
-            Product tv = new ShippableProduct("TV", 1500, 1, 10.0); // 150 per unit, 700g, shippable
-            Product mobileCard = new SimpleProduct("Mobile Scratch Card", 5, 2); // 100g, shippable
-            // Customer
+            // Test 1: Valid order
+            System.out.println("=== Test 1: Valid Order ===");
             Customer customer = new Customer("Alice", 5000);
-
-            // Add to cart - 2x Cheese, 1x Biscuits, 1x TV
             customer.getCart().addProduct(cheese, 2);
             customer.getCart().addProduct(biscuits, 1);
             customer.getCart().addProduct(tv, 1);
-
-            // Checkout
             CheckoutService.checkout(customer);
+            
+            System.out.println("\n=== Test 2: Invalid Order - Quantity Exceeds Stock ===");
+            // Create new customer for second test
+            Customer customer2 = new Customer("Bob", 5000);
+            
+            // Try to order more TV than available (only 1 in stock, trying to order 3)
+            customer2.getCart().addProduct(tv, 3);
+            CheckoutService.checkout(customer2);
 
+        } catch (Exception e) {
+            System.out.println("Checkout error: " + e.getMessage());
+        }
+        
+        // Test 3: Another invalid order scenario
+        try {
+            System.out.println("\n=== Test 3: Invalid Order - Product Out of Stock During Checkout ===");
+            Customer customer3 = new Customer("Charlie", 5000);
+            
+            // Add valid quantity to cart
+            customer3.getCart().addProduct(cheese, 5);
+            
+            // But another customer buys the remaining stock first
+            Customer customer4 = new Customer("David", 1000);
+            customer4.getCart().addProduct(cheese, 6); // This will leave only 4 in stock
+            CheckoutService.checkout(customer4);
+            
+            // Now try to checkout with customer3 (who has 5 in cart but only 4 left in stock)
+            CheckoutService.checkout(customer3);
+            
         } catch (Exception e) {
             System.out.println("Checkout error: " + e.getMessage());
         }
