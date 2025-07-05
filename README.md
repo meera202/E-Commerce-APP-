@@ -13,9 +13,10 @@ to run this project :
 
 java ECommerceApp
 
-this path to JAVA JDK on your PC : "C:\Program Files (x86)\Java\jdk1.8.0_60\bin\javac.exe"
+*note: this path to JAVA JDK on your PC : "C:\Program Files (x86)\Java\jdk1.8.0_60\bin\javac.exe"
 
 ============= the output :
+
 ** Shipment notice **
 
 2x Cheese 400g
