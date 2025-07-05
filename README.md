@@ -17,6 +17,8 @@ java ECommerceApp
 
 ============= the output :
 
+=== Test 1: Valid Order ===
+
 ** Shipment notice **
 
 2x Cheese 400g
@@ -41,6 +43,33 @@ Subtotal 1850
 Shipping 333
 
 Amount 2183
+
+=== Test 2: Invalid Order - Quantity Exceeds Stock ===
+
+Checkout error: Not enough stock.
+
+=== Test 3: Invalid Order - Product Out of Stock During Checkout ===
+
+** Shipment notice **
+
+6x Cheese 1200g
+
+Total package weight 1.2kg
+
+** Checkout receipt **
+
+6x Cheese 600
+
+----------------------
+
+Subtotal 600
+
+Shipping 36
+
+Amount 636
+
+Checkout error: Product out of stock: Cheese
+
 
 
 
